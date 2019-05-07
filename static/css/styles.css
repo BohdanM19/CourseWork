@@ -1,0 +1,56 @@
+body {
+    padding: 0;
+    margin: 0;
+
+}
+
+header{
+    background-color: #ca6508;
+    width: 100%;
+    height: 60px;
+    padding-top: 10px;
+
+
+
+
+}
+header img{
+    float: left;
+    margin-left: 10px;
+}
+.txt{
+    padding-left: 800px;
+    padding-bottom: 300px;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  padding-top: 10px;
+  margin-left: 250px ;
+  background: #ca6508;
+  height: 30px;
+  text-align: center;
+  font-family: Marker Felt, fantasy;
+  font-size: 23px;
+  color: #ececf6;
+  position: relative;
+
+
+}
+
+.contacts{
+    position:absolute;
+    top:10px;
+    right:0;
+    width:200px;
+    background: #ca6508;
+    height: 60px;
+    margin-left: 560px;
+    font-family: Marker Felt, fantasy;
+    color: #ececf6;
+}
+
+li{
+    list-style-type: none;
+}

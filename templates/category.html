@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block container %}{% endblock container %}
+{% block item %}
+    <div class="row">
+        {% for item in Items %}
+            <div class="col-sm-4 col-lg-4 md-4">
+                <div class="img-thumbnail" >
+                    <img src="{{ item.image.url }}" alt="" style="width: 200px;height: 220px;">
+                    <div class="caption">
+                        <h4 class="pull-right">{{ item.price }} грн.</h4>
+                        <h4><a href="#">{{ item.name }}</a></h4>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-outline-primary">Перейти</button>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+
+    </div>
+{% endblock item %}

@@ -1,0 +1,1 @@
+web: gunicorn CourseWork.wsgi --log-file
