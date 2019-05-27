@@ -6,4 +6,7 @@ admin.site.register(Brand)
 admin.site.register(Category)
 admin.site.register(CustomerCategory)
 admin.site.register(Item)
+admin.site.register(SiteUser)
+admin.site.register(CartItem)
+admin.site.register(Cart)
 
