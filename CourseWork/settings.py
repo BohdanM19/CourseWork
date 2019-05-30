@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'application',
     'bootstrap4',
+    'crispy_forms',
 
 ]
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 AUTH_USER_MODEL = 'application.SiteUser'
 
@@ -53,7 +54,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 ]
-
 
 ROOT_URLCONF = 'CourseWork.urls'
 
@@ -109,8 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -134,8 +132,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

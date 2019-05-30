@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.views import LoginView
 import random
 from django.http import HttpResponseRedirect
+from application.forms import *
 
 
 def get_cart(request):
@@ -29,6 +30,7 @@ def rand_items(n):
 
 def base_view(request):
     cart = get_cart(request)
+
     cust_categories = CustomerCategory.objects.all()
     items = Item.objects.filter(id__in=rand_items(3))
     context = {
@@ -98,6 +100,7 @@ def add_to_cart_view(request, item_slug):
     product = Item.objects.get(slug=item_slug)
     cart_item, _ = CartItem.objects.get_or_create(product=product, item_total=product.price)
     cart = get_cart(request)
+    cart.cart_total += cart_item.item_total
     if cart_item not in cart.items.all():
         cart.items.add(cart_item)
         cart.save()
@@ -110,6 +113,52 @@ def remove_from_cart_view(request, item_slug):
     cart = get_cart(request)
     for cart_item in cart.items.all():
         if cart_item.product == product:
+            cart.cart_total = cart.cart_total - cart_item.item_total
             cart.items.remove(cart_item)
             cart.save()
             return HttpResponseRedirect("/cart/")
+
+
+def account_view(request):
+    cart = get_cart(request)
+    context = {
+
+        'cart': cart,
+
+    }
+    return render(request, 'account.html', context)
+
+
+def order_create_view(request):
+    form = OrderForm(request.POST or None)
+    cart = get_cart(request)
+    context = {
+        'form': form,
+        'cart': cart,
+    }
+    return render(request, 'order.html', context)
+
+
+def make_order_view(request):
+    cart = get_cart(request)
+    form = OrderForm(request.POST or None)
+    if form.is_valid():
+        name = form.cleaned_data['name']
+        last_name = form.cleaned_data['last_name']
+        phone = form.cleaned_data['phone']
+        buying_type = form.cleaned_data['buying_type']
+        address = form.cleaned_data['address']
+        new_order = Order()
+        new_order.user = request.user
+        new_order.save()
+        new_order.items.add(cart)
+        new_order.first_name = name
+        new_order.last_name = last_name
+        new_order.phone = phone
+        new_order.address = address
+        new_order.buying_type = buying_type
+        new_order.total = cart.cart_total
+        new_order.save()
+        del request.session['cart_id']
+        del request.session['total']
+        return render(request, 'thank_you.html')

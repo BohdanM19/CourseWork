@@ -4,19 +4,27 @@
     <table class='table'>
         <tr>
             <td class='text-center'>Товар</td>
-            <td class='text-center'>Кол-во</td>
+{#            <td class='text-center'>Кол-во</td>#}
             <td class='text-center'>Цена</td>
             <td class='text-center'></td>
         </tr>
     {% for item in cart.items.all %}
          <tr>
             <td class='text-center'>{{ item.product }}</td>
-            <td class='text-center'>{{ item.qty }}</td>
+{#            <td class='text-center'>{{ item.qty }}</td>#}
             <td class='text-center'>{{ item.item_total }}</td>
             <td class='text-center'><a href='{% url "remove_from_cart" item_slug=item.product.slug %}'><button class="btn btn-default">Удалить из корзины</button></a></td>
          </tr>
+
+
     {% endfor %}
+     <tr>
+            <td class='text-center'></td>
+            <td class='text-center'></td>
+            <td class='text-center'><strong>Итого к оплате: {{ cart.cart_total }}</strong></td>
+         </tr>
     </table>
+    <a href="{% url 'create_order' %}" class="pull-right"><button class="btn btn-success">Оформить заказ</button></a>
 {% endblock content %}
 
 

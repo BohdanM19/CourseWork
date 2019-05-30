@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from transliterate import translit
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from django.conf import settings
 
 
 class Brand(models.Model):
@@ -119,8 +120,32 @@ class CartItem(models.Model):
 
 
 class Cart(models.Model):
-    items = models.ManyToManyField(CartItem, blank=True)
+    items = models.ManyToManyField(CartItem, blank=True, )
     cart_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):
         return str(self.id)
+
+
+ORDER_STATUS_CHOICES = (
+    ("Принят в обработку", "Принят в обработку"),
+    ("Выполняеться", "Выполняеться"),
+    ("Оплачен", "Оплачен")
+)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Cart)
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=255)
+    buying_type = models.CharField(max_length=40, choices=(('Самовывоз', 'Самовывоз'), ("Доставка", "Доставка")),
+                                   default='Самовывоз')
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=100, choices=ORDER_STATUS_CHOICES)
+    total = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+
+    def __str__(self):
+        return "Заказ №{}".format(str(self.id))

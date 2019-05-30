@@ -56,6 +56,9 @@
                         <li style="list-style-type: none">
                             <b class="navbar-text">Здравствуйте, {{ request.user }}!</b>
                         </li>
+                        <li>
+                            <a href="{% url 'account' %}">Личний кабинет</a>
+                        </li>
                     {% endif %}
 
 
