@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from .models import *
-from django.contrib.auth.views import LoginView
 import random
 from django.http import HttpResponseRedirect
 from application.forms import *
+from django.contrib.auth import login, authenticate
 
 
 def get_cart(request):
@@ -70,10 +70,6 @@ def category_items_view(request, customer_slug, item_category):
     return render(request, "category_items.html", context)
 
 
-class UserLoginView(LoginView):
-    template_name = 'login.html'
-
-
 def cart_view(request):
     cart = get_cart(request)
     cust_categories = CustomerCategory.objects.all()
@@ -121,9 +117,11 @@ def remove_from_cart_view(request, item_slug):
 
 def account_view(request):
     cart = get_cart(request)
+    order = Order.objects.filter(user=request.user).order_by('-id')
     context = {
 
         'cart': cart,
+        'order': order
 
     }
     return render(request, 'account.html', context)
@@ -162,3 +160,50 @@ def make_order_view(request):
         del request.session['cart_id']
         del request.session['total']
         return render(request, 'thank_you.html')
+
+
+def registration_view(request):
+    form = RegistrationForm(request.POST or None)
+    if form.is_valid():
+        new_user = form.save(commit=False)
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        email = form.cleaned_data['email']
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+
+        new_user.username = username
+        new_user.set_password(password)
+        new_user.first_name = first_name
+        new_user.last_name = last_name
+        new_user.email = email
+        new_user.save()
+
+        # user = form.cleaned_data['username']
+        # password = form.cleaned_data['password']
+        # login_user = authenticate(username=user, password=password)
+        # if login_user:
+        #     login(request, login_user)
+        login_user = authenticate(username=username, password=password)
+        if login_user:
+            login(request, login_user)
+            return HttpResponseRedirect(reverse('base'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'registration.html', context)
+
+
+def login_view(request):
+    form = LoginForm(request.POST or None)
+    if form.is_valid():
+        user = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        login_user = authenticate(username=user, password=password)
+        if login_user:
+            login(request, login_user)
+            return HttpResponseRedirect(reverse('base'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'login.html', context)

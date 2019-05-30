@@ -12,8 +12,9 @@
                                 <h4 class="pull-right">{{ item.price }} грн.</h4>
                                 <h5><strong><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></strong>
                                 </h5>
+                                {% if  request.user.is_authenticated %}
                                 <a href="{% url 'add_to_cart' item_slug=item.slug %}" class="text-center" ><button class="btn btn-danger">Добавить в корзину</button></a>
-
+                                {% endif %}
                             </div>
 
                         </div>

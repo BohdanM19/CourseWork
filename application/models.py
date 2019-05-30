@@ -103,13 +103,6 @@ def pre_save_item_slug(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_item_slug, sender=Item)
 
 
-class SiteUser(AbstractUser):
-    is_activated = models.BooleanField(default=True, db_index=True, verbose_name='Прошел активацию?')
-
-    class Meta(AbstractUser.Meta):
-        pass
-
-
 class CartItem(models.Model):
     product = models.ForeignKey(Item, on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(default=1)
@@ -144,7 +137,7 @@ class Order(models.Model):
     buying_type = models.CharField(max_length=40, choices=(('Самовывоз', 'Самовывоз'), ("Доставка", "Доставка")),
                                    default='Самовывоз')
     date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=100, choices=ORDER_STATUS_CHOICES)
+    status = models.CharField(max_length=100, choices=ORDER_STATUS_CHOICES, default='Принят в обработку')
     total = models.DecimalField(max_digits=9, decimal_places=2, default=0)
 
     def __str__(self):
