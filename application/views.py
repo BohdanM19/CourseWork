@@ -32,7 +32,7 @@ def base_view(request):
     cart = get_cart(request)
 
     cust_categories = CustomerCategory.objects.all()
-    items = Item.objects.filter(id__in=rand_items(3))
+    items = Item.objects.filter(id__in=rand_items(9))
     context = {
         'Customers': cust_categories,
         'Items': items,
@@ -179,11 +179,6 @@ def registration_view(request):
         new_user.email = email
         new_user.save()
 
-        # user = form.cleaned_data['username']
-        # password = form.cleaned_data['password']
-        # login_user = authenticate(username=user, password=password)
-        # if login_user:
-        #     login(request, login_user)
         login_user = authenticate(username=username, password=password)
         if login_user:
             login(request, login_user)
