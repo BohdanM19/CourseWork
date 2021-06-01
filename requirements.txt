@@ -28,7 +28,7 @@ six==1.11.0
 soupsieve==1.9
 termcolor==1.1.0
 transliterate==1.10.2
-urllib3==1.24.1
+urllib3==1.26.5
 urwid==2.0.1
 wcwidth==0.1.7
 
