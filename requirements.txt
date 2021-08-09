@@ -19,7 +19,7 @@ pycparser==2.19
 pypiwin32==223
 python-dateutil==2.8.0
 pytz==2018.9
-pywin32==224
+pywin32==301
 PyYAML==3.13
 rebound-cli==2.0.0
 requests==2.20.1
